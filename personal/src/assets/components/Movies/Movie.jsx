@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
-import "./Movie.css"
-    
+import React, { useState } from "react";
+import "./Movie.css";
+import axios from "axios";
+
 const Movie = () => {
   const [query, setQuery] = useState("");
   const [movie, setMovie] = useState(null);
@@ -10,27 +11,27 @@ const Movie = () => {
 
   const searchMovie = async () => {
     if (!query) return;
-    
+
     setError("");
     setMovie(null);
 
     try {
-      const response = await fetch(`https://www.omdbapi.com/?t=${query}&apikey=${API_KEY}`);
-      const data = await response.json();
-      
-      if (data.Response === "True") {
-        setMovie(data);
+      const response = await axios.get(`https://www.omdbapi.com/?t=${query}&apikey=${API_KEY}`, {
+        params: { t: query, apikey: API_KEY },
+      });
+
+      if (response.data.Response === "True") {
+        setMovie(response.data);
       } else {
-        setError(data.Error);
+        setError(response.data.Error);
       }
     } catch (err) {
       setError("Something went wrong!");
     }
   };
 
-  
   return (
-    <div className="app-container">
+    <div className="app_container">
       <h1>Movie Search</h1>
       <input
         type="text"
@@ -44,11 +45,19 @@ const Movie = () => {
 
       {movie && (
         <div className="movie-card">
-          <h2>{movie.Title} ({movie.Year})</h2>
+          <h2>
+            {movie.Title} ({movie.Year})
+          </h2>
           <img src={movie.Poster} alt={movie.Title} />
-          <p><strong>Plot:</strong> {movie.Plot}</p>
-          <p><strong>Actors:</strong> {movie.Actors}</p>
-          <p><strong>IMDB Rating:</strong> {movie.imdbRating}</p>
+          <p>
+            <strong>Plot:</strong> {movie.Plot}
+          </p>
+          <p>
+            <strong>Actors:</strong> {movie.Actors}
+          </p>
+          <p>
+            <strong>IMDB Rating:</strong> {movie.imdbRating}
+          </p>
         </div>
       )}
     </div>
@@ -56,5 +65,3 @@ const Movie = () => {
 };
 
 export default Movie;
-
-   

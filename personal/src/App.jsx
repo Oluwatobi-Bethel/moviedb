@@ -1,5 +1,5 @@
 import React from "react";
-import Movie from "./components/Movies/Movie";
+import Movie from "./components/Movie";
 
 
 
@@ -8,11 +8,12 @@ import Movie from "./components/Movies/Movie";
 function App () {
 
   return (
-    <div className="app-container">
-  <h1>My movie app</h1>
-  <Movie/>
-    
-    </div>
+    <>
+    {/* <div className="app_container"> */}
+  {/* <h1>My movie app</h1> */}
+    {/* </div> */}
+    <Movie/>
+    </>
   )
 }
 
